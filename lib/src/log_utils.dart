@@ -5,17 +5,17 @@ import 'logger.dart';
 String jsonFormat(String json) {
   try {
     if (json.startsWith("{")) { //is jsonObject
-      Map<String, dynamic> decode = JsonCodec().decode(json);
+      Map<String, dynamic>? decode = JsonCodec().decode(json);
       return _convert(decode, 0);
     } else if (json.startsWith("[")) { //is jsonArray
-      List decode = JsonCodec().decode(json);
+      List? decode = JsonCodec().decode(json);
       return _convert(decode, 0);
     } else { //错误的json格式
-      L.e("Wrong format: $json");
+      Log.e("Wrong format: $json");
       return "Wrong format: $json";
     }
   }catch (e) {
-    L.e("${e.toString().trim()}\njson: $json");
+    Log.e("${e.toString().trim()}\njson: $json");
     return "${e.toString().trim()}\njson: $json";
   }
 }
@@ -80,7 +80,7 @@ String _convert(dynamic object, int deep, {bool isObject = false}) {
 String getDeepSpace(int deep) {
   var tab = StringBuffer();
   for (int i = 0; i < deep; i++) {
-    tab.write("\t");
+    tab.write(" ");
   }
   return tab.toString();
 }

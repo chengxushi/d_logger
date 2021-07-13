@@ -13,7 +13,7 @@ class CommonPrinter extends LogPrinter {
   String _topBorder = '';
   String _bottomBorder = '';
 
-  CommonPrinter({bool enableLog, LogLevel level, String tag})
+  CommonPrinter({bool? enableLog, LogLevel? level, String? tag,})
       : super(enableLog, level, tag) {
     //初始化分割线
     var dividerLine = StringBuffer();
@@ -29,22 +29,38 @@ class CommonPrinter extends LogPrinter {
   @override
   Future<void> write(LogMessage message) async {
     if (shouldShowLog(message)) {
-      var info = StringBuffer();
-      var startInfo = "${message.level.name} ${message.tag}";
-      info.write("$startInfo $_topBorder\n");
-      var lines = message.toString().split("\n");
-      for (var line in lines) {
-        var midStr = "$startInfo $verticalLine $line\n";
-        if (info.length + midStr.length >= printMaxLength) {
-          print(midStr);
-        } else {
-          print(info);
-          info.clear();
-          info.write(midStr);
+      if(message.hasLine) {
+        var info = StringBuffer();
+        var startInfo = "${message.level.name} ${message.tag}";
+        info.write("$startInfo $_topBorder\n");
+        var lines = message.toString().split("\n");
+        for (var line in lines) {
+          var midStr = "$startInfo $verticalLine $line\n";
+          if (info.length + midStr.length >= printMaxLength) {
+            print(midStr);
+          } else {
+            print(info);
+            info.clear();
+            info.write(midStr);
+          }
+        }
+        print(info);
+        print("$startInfo $_bottomBorder");
+      } else {
+        var info = StringBuffer();
+        var startInfo = "${message.level.name} ${message.tag}";
+        var lines = message.toString().split("\n");
+        for (var line in lines) {
+          var midStr = "$startInfo $line";
+          if (info.length + midStr.length >= printMaxLength) {
+            print(midStr);
+          } else {
+            info.clear();
+            info.write(midStr);
+            print(info);
+          }
         }
       }
-      print(info);
-      print("$startInfo $_bottomBorder");
     }
   }
 }

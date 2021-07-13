@@ -8,7 +8,7 @@ abstract class LogPrinter {
   static const bool _isProduct =
       bool.fromEnvironment('dart.vm.product', defaultValue: false);  //是否是正式环境
 
-  LogPrinter([bool enableLog, LogLevel level, String tag])
+  LogPrinter([bool? enableLog, LogLevel? level, String? tag])
       : _enableLog = enableLog ?? true,
         _minLevel = level ?? LogLevel.debug;
 
